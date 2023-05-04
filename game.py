@@ -1,12 +1,14 @@
 import pygame
 from random import randint
 
+# Function that gets the score based on the time it takes 
 def score():
     current_time = int(pygame.time.get_ticks() / 1000) - start_time
     game_score = text.render(f'{current_time}', False, (0, 0, 0))
     score_rect = game_score.get_rect(center = (400, 50))
     screen.blit(game_score, score_rect)
 
+# Updating enemies
 def enemies(enemy_list):
     if enemy_list:
         for enemy in enemy_list:
@@ -19,12 +21,14 @@ def enemies(enemy_list):
         return enemy_list
     else: return []
 
+    # Collisions between enemy and player
 def collisions(player, enemy):
     if enemy:
         for enemy_rect in enemy:
             if player.colliderect(enemy_rect): return False
     return True
 
+# Initializing pygame 
 pygame.init()
 
 screen = pygame.display.set_mode((800, 400))
@@ -35,6 +39,7 @@ gravity = 0
 game_active = True
 start_time = 0
 
+# Loading all fonts and images 
 text = pygame.font.SysFont('comicsansms', 60)
 background = pygame.image.load('assets/Bg/Background_2.png').convert()
 ground = pygame.image.load('assets/Bg/ground.png').convert_alpha()
@@ -42,6 +47,7 @@ game_over = pygame.image.load('assets/Knight/gameover.png')
 player = pygame.image.load('assets/Knight/knightidle.png').convert_alpha()
 skeleton = pygame.image.load('assets/Knight/skeletonidle.png').convert_alpha()
 orc = pygame.image.load('assets/Knight/orcidle.png').convert_alpha()
+
 
 player_rect = player.get_rect(midbottom=(80, 305))
 skele_rect = skeleton.get_rect(midbottom=(500, 305))
@@ -52,13 +58,15 @@ enemies_list = []
 obstacle_timer = pygame.USEREVENT + 1
 pygame.time.set_timer(obstacle_timer, 900)
 
+# Function to keep running the game
 while True:
     clock.tick(60)  
     for event in pygame.event.get():
         
         if event.type == pygame.QUIT:
             pygame.quit()
-    
+        
+        # To keep game actively running
         if game_active:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE and player_rect.bottom == 305:
